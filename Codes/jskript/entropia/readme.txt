@@ -1,0 +1,1 @@
+The program considers the entropy of the line, enter the line.

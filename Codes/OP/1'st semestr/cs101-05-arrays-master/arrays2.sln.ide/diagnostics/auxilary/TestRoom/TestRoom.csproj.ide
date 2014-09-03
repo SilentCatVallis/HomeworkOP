@@ -1,0 +1,208 @@
+﻿<Project Format="0.0.0.3">
+  <Version>2013-10-14T03:37:09.0812688Z</Version>
+  <Binding>True</Binding>
+  <Diagnostic>
+    <Code>1003</Code>
+    <Id>CS1003</Id>
+    <Severity>Error</Severity>
+    <Message>Syntax error, ',' expected</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>64</MappedLine>
+    <MappedColumn>17</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>64</OriginalLine>
+    <OriginalColumn>17</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>1002</Code>
+    <Id>CS1002</Id>
+    <Severity>Error</Severity>
+    <Message>; expected</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>64</MappedLine>
+    <MappedColumn>18</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>64</OriginalLine>
+    <OriginalColumn>18</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>1528</Code>
+    <Id>CS1528</Id>
+    <Severity>Error</Severity>
+    <Message>Expected ; or = (cannot specify constructor arguments in declaration)</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>98</MappedLine>
+    <MappedColumn>20</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>98</OriginalLine>
+    <OriginalColumn>20</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>1003</Code>
+    <Id>CS1003</Id>
+    <Severity>Error</Severity>
+    <Message>Syntax error, '[' expected</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>98</MappedLine>
+    <MappedColumn>20</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>98</OriginalLine>
+    <OriginalColumn>20</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>1003</Code>
+    <Id>CS1003</Id>
+    <Severity>Error</Severity>
+    <Message>Syntax error, ']' expected</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>98</MappedLine>
+    <MappedColumn>52</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>98</OriginalLine>
+    <OriginalColumn>52</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>1528</Code>
+    <Id>CS1528</Id>
+    <Severity>Error</Severity>
+    <Message>Expected ; or = (cannot specify constructor arguments in declaration)</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>126</MappedLine>
+    <MappedColumn>20</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>126</OriginalLine>
+    <OriginalColumn>20</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>1003</Code>
+    <Id>CS1003</Id>
+    <Severity>Error</Severity>
+    <Message>Syntax error, '[' expected</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>126</MappedLine>
+    <MappedColumn>20</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>126</OriginalLine>
+    <OriginalColumn>20</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>1003</Code>
+    <Id>CS1003</Id>
+    <Severity>Error</Severity>
+    <Message>Syntax error, ']' expected</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>126</MappedLine>
+    <MappedColumn>52</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>126</OriginalLine>
+    <OriginalColumn>52</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>246</Code>
+    <Id>CS0246</Id>
+    <Severity>Error</Severity>
+    <Message>The type or namespace name 'await' could not be found (are you missing a using directive or an assembly reference?)</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>64</MappedLine>
+    <MappedColumn>3</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>64</OriginalLine>
+    <OriginalColumn>3</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>128</Code>
+    <Id>CS0128</Id>
+    <Severity>Error</Severity>
+    <Message>A local variable named 'testCase' is already defined in this scope</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>64</MappedLine>
+    <MappedColumn>9</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>64</OriginalLine>
+    <OriginalColumn>9</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>103</Code>
+    <Id>CS0103</Id>
+    <Severity>Error</Severity>
+    <Message>The name 'Run' does not exist in the current context</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>64</MappedLine>
+    <MappedColumn>18</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>64</OriginalLine>
+    <OriginalColumn>18</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>168</Code>
+    <Id>CS0168</Id>
+    <Severity>Warning</Severity>
+    <Message>The variable 'testCase' is declared but never used</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>64</MappedLine>
+    <MappedColumn>9</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>64</OriginalLine>
+    <OriginalColumn>9</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>161</Code>
+    <Id>CS0161</Id>
+    <Severity>Error</Severity>
+    <Message>'TestingRoom.TestRoom.RunTestCase(System.Windows.Forms.ListViewItem)': not all code paths return a value</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>60</MappedLine>
+    <MappedColumn>21</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>60</OriginalLine>
+    <OriginalColumn>21</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>246</Code>
+    <Id>CS0246</Id>
+    <Severity>Error</Severity>
+    <Message>The type or namespace name 'await' could not be found (are you missing a using directive or an assembly reference?)</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>98</MappedLine>
+    <MappedColumn>3</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>98</OriginalLine>
+    <OriginalColumn>3</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>168</Code>
+    <Id>CS0168</Id>
+    <Severity>Warning</Severity>
+    <Message>The variable 'RunTestCase' is declared but never used</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>98</MappedLine>
+    <MappedColumn>9</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>98</OriginalLine>
+    <OriginalColumn>9</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>246</Code>
+    <Id>CS0246</Id>
+    <Severity>Error</Severity>
+    <Message>The type or namespace name 'await' could not be found (are you missing a using directive or an assembly reference?)</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>126</MappedLine>
+    <MappedColumn>3</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>126</OriginalLine>
+    <OriginalColumn>3</OriginalColumn>
+  </Diagnostic>
+  <Diagnostic>
+    <Code>168</Code>
+    <Id>CS0168</Id>
+    <Severity>Warning</Severity>
+    <Message>The variable 'RunTestCase' is declared but never used</Message>
+    <MappedFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</MappedFile>
+    <MappedLine>126</MappedLine>
+    <MappedColumn>9</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Codes\OP\1'st semestr\cs101-05-arrays-master\auxilary\TestRoom\TestRoom.cs</OriginalFile>
+    <OriginalLine>126</OriginalLine>
+    <OriginalColumn>9</OriginalColumn>
+  </Diagnostic>
+</Project>

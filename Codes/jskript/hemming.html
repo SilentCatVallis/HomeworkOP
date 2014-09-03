@@ -1,0 +1,153 @@
+<head>
+  <meta charset="utf-8">
+  <title>Hemming</title>
+  <style>
+  h1 
+  {
+    font-family: 'Times New Roman', Times, serif;
+  }
+  body 
+  {
+    background: url(xp.jpg);
+    color: #800000;
+  }
+  </style>
+ </head>
+<script>
+
+function Corrector(array)
+{
+	var len = array.length;
+	var newArray = [];
+	for (var i = 0; i < array.length; ++i)
+	{
+		newArray[i] = array[i];
+	}
+	var i = 1;
+	while (i - 1 < array.length)
+	{
+		var count = 0;
+		for (var j = i + 1; j <= newArray.length; ++j)
+		{
+			if (Math.floor(j / i) % 2 == 1)
+				count += +array[j - 1];
+		}
+		newArray[i - 1] = count % 2;
+		i *= 2;
+	}
+	i = 1;
+	var sum = 0;
+	while (i - 1 < array.length)
+	{
+		if (newArray[i - 1] != array[i - 1])
+			sum += i;
+		i *= 2;
+	}
+	if (sum > 0)
+	{
+		if (array[sum - 1] == 0)
+			array[sum - 1] = 1;
+		else
+			array[sum - 1] = 0;
+	}
+	
+	return array.join('');
+}
+
+function Encode (array)
+{
+	var code = [];
+	var i = 1,
+		j = 1,
+		ip = 1;
+	while (j <= array.length)
+	{
+		if (ip == i)
+		{
+			code[ip - 1] = 0;
+			i *= 2;
+		}
+		else
+		{
+			code[ip - 1] = array[j - 1];
+			j++;
+		}
+		ip++;
+	}
+	
+	i = 1;
+	while (i - 1 < code.length)
+	{
+		var count = 0;
+		for (var j = i; j <= code.length; ++j)
+		{
+			if (Math.floor(j / i) % 2 == 1)
+				count += +code[j - 1];
+		}
+		code[i - 1] = count % 2;
+		i *= 2;
+	}
+	return code;
+}
+
+function init() 
+{
+	document.getElementById("divId").innerHTML = "Hemming";
+}
+
+function Encoding()
+{
+	var line = document.getElementById("inputCode").value;
+	var flag = 0;
+	for (var i = 0; i < line.length; ++i)
+	{
+		if (line.charAt(i) != '0' && line.charAt(i) != '1')
+		{
+			document.getElementById("withoutMistake").innerHTML = "Mistake input :(";
+			flag = 1;
+			break;
+		}
+	}
+	if (flag == 0) document.getElementById("outputCode").innerHTML = Encode(line.split('')).join('');
+}
+
+function Correction()
+{
+	var line = document.getElementById("inputMistake").value;
+	var flag = 0;
+	if (line.length < 3)
+	{
+		document.getElementById("withoutMistake").innerHTML = "Mistake input :(";
+		flag = 1;
+	}
+	for (var i = 0; i < line.length; ++i)
+	{
+		if (line.charAt(i) != '0' && line.charAt(i) != '1')
+		{
+			document.getElementById("withoutMistake").innerHTML = "Mistake input :(";
+			flag = 1;
+			break;
+		}
+	}
+	if (flag == 0) document.getElementById("withoutMistake").innerHTML = Corrector(line.split(''));
+}
+</script>
+<body onload="init()">
+	<div id="divId">
+		<h1>Hemming</h1>
+	</div>
+	
+	<div id="divForEncode">
+		<h1>put message for encode</h1>
+	<input id="inputCode" />
+	<button onclick="Encoding()">Encode</button>
+	<output id="outputCode" />
+	</div>
+	
+	<div id ="divForMistake">
+		<h1>put message with mistake</h1>
+	<input id="inputMistake" />
+	<button onclick="Correction()">Correct</button>
+	<output id="withoutMistake" />
+	</div>
+</body>

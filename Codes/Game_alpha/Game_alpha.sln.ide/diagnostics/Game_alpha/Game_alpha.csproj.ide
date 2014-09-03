@@ -1,0 +1,16 @@
+﻿<Project Format="0.0.0.3">
+  <Version>2014-04-01T05:43:42.9470916Z</Version>
+  <Binding>True</Binding>
+  <Diagnostic>
+    <Code>649</Code>
+    <Id>CS0649</Id>
+    <Severity>Warning</Severity>
+    <Message>Field 'Game_alpha.Forms.IsWin' is never assigned to, and will always have its default value false</Message>
+    <MappedFile>C:\Users\213\Desktop\Game_alpha\Game_alpha\Forms.cs</MappedFile>
+    <MappedLine>12</MappedLine>
+    <MappedColumn>21</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\Game_alpha\Game_alpha\Forms.cs</OriginalFile>
+    <OriginalLine>12</OriginalLine>
+    <OriginalColumn>21</OriginalColumn>
+  </Diagnostic>
+</Project>

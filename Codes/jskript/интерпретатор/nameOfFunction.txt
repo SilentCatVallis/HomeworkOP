@@ -1,0 +1,10 @@
+exit = 210
+put = 211
+swap = 212
+read = 213
+write = 214
+mins = 215
+add = 216
+mult = 217
+jump = 218
+cmp = 219

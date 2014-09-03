@@ -1,0 +1,6 @@
+read 202 put 0 203 put 1 204 put error 205 put 2 206 put 2 200 put 1 201 put 3 207
+cmp 202 204 jump 0 38 jump 0 41 jump 0 35 write 205 exit write 204 exit
+cmp 202 206 jump 0 53 jump 0 56 jump 0 0 write 204 exit
+cmp 202 207 jump 0 68 jump 0 86 jump 0 0 
+cmp 200 201 jump 0 80 jump 0 80 jump 0 83 write 200 exit write 201 exit 
+cmp 200 201 jump 0 109 jump 0 109 jump 0 98 add 200 201 200 mins 202 204 202 jump 1 56 add 200 201 201 mins 202 204 202 jump 1 56

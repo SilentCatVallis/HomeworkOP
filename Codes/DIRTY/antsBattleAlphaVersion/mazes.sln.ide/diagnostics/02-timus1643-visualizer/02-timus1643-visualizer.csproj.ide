@@ -1,0 +1,16 @@
+﻿<Project Format="0.0.0.3">
+  <Version>2014-03-14T04:53:57.4858482Z</Version>
+  <Binding>True</Binding>
+  <Diagnostic>
+    <Code>246</Code>
+    <Id>CS0246</Id>
+    <Severity>Error</Severity>
+    <Message>The type or namespace name 'timus1643' could not be found (are you missing a using directive or an assembly reference?)</Message>
+    <MappedFile>C:\Users\213\Desktop\antsBattle\02-timus1643-visualizer\Program.cs</MappedFile>
+    <MappedLine>7</MappedLine>
+    <MappedColumn>6</MappedColumn>
+    <OriginalFile>C:\Users\213\Desktop\antsBattle\02-timus1643-visualizer\Program.cs</OriginalFile>
+    <OriginalLine>7</OriginalLine>
+    <OriginalColumn>6</OriginalColumn>
+  </Diagnostic>
+</Project>

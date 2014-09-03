@@ -1,0 +1,11 @@
+read 200 read 201 put 1 204 put -1 203 put 0 202 
+cmp 202 200 jump 0 29 jump 0 25 jump 0 29 mult 203 200 200 
+cmp 202 201 jump 0 45 jump 0 41   jump 0 45
+mult 203 201 201
+cmp 202 200     jump 0 57 jump 0 0   jump 0 75
+cmp 202 201 jump 0 69 jump 0 0 jump 0 72
+write 204 exit
+write 201 exit
+cmp 202 201 jump 0 87 jump 0 0 jump 0 90
+write 200 exit
+cmp 200 201 jump 0 102 jump 0 105 jump 0 112 write 201 exit mins 200 201 200 jump 1 90 mins 201 200 201 jump 1 90

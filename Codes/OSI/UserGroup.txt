@@ -1,0 +1,29 @@
+#!/bin/bash
+if [ "$1" == "--help" ]
+then
+    echo "Program prints all groups for user"
+    exit
+fi
+choosenUser=$(whoami) 
+if [ "$1" != "" ]
+then
+    choosenUser=$1
+fi
+flag=0
+for line in $(cat /etc/group)
+do
+	group=`echo $line | awk 'BEGIN {FS=":"} { print $1 }'`
+	users=`echo $line | awk 'BEGIN {FS=":"} { print $4 }'`
+	for user in $users
+    do
+        if [ "$user" == "$choosenUser" ]
+        then
+            flag=1
+            echo $group
+        fi
+    done
+done
+if [ $flag == 0 ]
+then
+        echo "No groups"
+fi

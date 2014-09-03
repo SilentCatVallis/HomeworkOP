@@ -1,0 +1,1 @@
+read 100 put 1 105 put 1 101 put 0 102 cmp 100 102 jump 0 23 jump 0 26 jump 0 0 write 101 exit mult 100 101 101 mins 100 105 100 jump 1 11

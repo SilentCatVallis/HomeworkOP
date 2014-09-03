@@ -1,0 +1,21 @@
+#!bin/bash
+our=`pwd`
+new=$our
+p=""
+if [ "$1" == "--help" ]
+then
+	echo "Get temp file";
+else
+	if [ ! "$1" == "$p" ]
+	then
+		new=$1
+	fi;
+	rand=$RANDOM
+	cd $new
+	while [ -e $rand ]
+	do
+		rand=$RANDOM
+	done;
+	touch $rand
+	cd $our
+fi;

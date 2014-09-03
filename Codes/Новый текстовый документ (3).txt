@@ -1,0 +1,62 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <algorithm>
+#include <string>
+
+
+using namespace std;
+
+
+int main()
+{
+	//freopen("inp.txt", "r", stdin);
+	int n;
+	scanf("%d", &n);
+}
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+
+using namespace std;
+
+
+int a[100500];
+
+
+int Getsum(int strt, int fin)
+{
+	int sum = 0;
+	for (int i = strt; i <= fin; i++)
+	{
+		sum += a[i];
+	}
+	return sum;
+}
+
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%d", &a[i]);
+	}
+	int f, s;
+	scanf("%d %d", &f, &s);
+	int sumf = 0;
+	int sums = 0;
+	if (f > s)
+	{
+			sumf += Getsum(f - (f - s) / 2, n - 1);
+			sums += Getsum(0, f - (f - s) / 2);
+	}
+	if (f < s)
+	{
+		sumf += Getsum(0, s - (s - f) / 2);
+	}
+}

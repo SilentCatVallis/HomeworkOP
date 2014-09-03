@@ -1,0 +1,7 @@
+﻿<Solution Format="0.0.0.3">
+  <Version>2014-03-14T15:57:05.2564658Z</Version>
+  <Project Path="C:\Users\213\Desktop\Codes\DIRTY\mazes\maze.csproj" />
+  <Project Path="C:\Users\213\Desktop\Codes\DIRTY\antsBattleAlphaVersion\01-flies\ants.csproj">
+    <Reference Path="C:\Users\213\Desktop\Codes\DIRTY\mazes\maze.csproj" />
+  </Project>
+</Solution>

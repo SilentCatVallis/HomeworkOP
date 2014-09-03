@@ -1,0 +1,7 @@
+﻿<Solution Format="0.0.0.3">
+  <Version>2014-04-20T09:44:33.992082Z</Version>
+  <Project Path="C:\Users\213\Desktop\Codes\piatnahki\WindowsFormsApplication2\WindowsFormsApplication2.csproj" />
+  <Project Path="C:\Users\213\Desktop\Codes\piatnahki\UnitTestProject1\UnitTestProject1.csproj">
+    <Reference Path="C:\Users\213\Desktop\Codes\piatnahki\WindowsFormsApplication2\WindowsFormsApplication2.csproj" />
+  </Project>
+</Solution>

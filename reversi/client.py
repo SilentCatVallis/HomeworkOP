@@ -5,7 +5,12 @@ class Client(object):
     def __init__(self, ip):
         #ip = '192.168.0.86'
         self.sock = socket.socket()
-        self.sock.connect((ip, 9090))
+        try:
+            self.sock.connect((ip, 9090))
+            self.error = False
+        except OSError:
+            self.error = True
+            return
         self.sock.send(b"yeap")
 
     def check_color(self):
@@ -20,9 +25,9 @@ class Client(object):
             return 0
 
     def get_cell(self):
-        print('get cell')
+        #print('get cell')
         return self.sock.recv(1024).decode()
 
     def set_cell(self, cell):
-        print('set cell')
+        #print('set cell')
         self.sock.send(cell.encode())

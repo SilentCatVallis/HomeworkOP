@@ -49,30 +49,55 @@ class Field(object):
     def is_correct(self, y, x, color):
         return self.checker(y, x, None, color)
 
-    def checker(self, y, x, func, color):
+    def fill_checked_lines(self, color, func_name, x, y):
+        checked_lines = [self.check_line(self.up_subs(y, x), y, x, func_name, color),
+                         self.check_line(self.down_subs(y, x), y, x, func_name, color),
+                         self.check_line(self.left_subs(y, x), y, x, func_name, color),
+                         self.check_line(self.right_subs(y, x), y, x, func_name, color),
+                         self.check_line(self.ur_subs(y, x), y, x, func_name, color),
+                         self.check_line(self.ul_subs(y, x), y, x, func_name, color),
+                         self.check_line(self.dr_subs(y, x), y, x, func_name, color),
+                         self.check_line(self.dl_subs(y, x), y, x, func_name, color)]
+        return checked_lines
+
+    def checker(self, y, x, func_name, color):
         if self.field[y][x] != 0:
             return False
-        a = [self.check_line(self.up_subs(y, x), y, x, func, color),
-             self.check_line(self.down_subs(y, x), y, x, func, color),
-             self.check_line(self.left_subs(y, x), y, x, func, color),
-             self.check_line(self.right_subs(y, x), y, x, func, color),
-             self.check_line(self.ur_subs(y, x), y, x, func, color),
-             self.check_line(self.ul_subs(y, x), y, x, func, color),
-             self.check_line(self.dr_subs(y, x), y, x, func, color),
-             self.check_line(self.dl_subs(y, x), y, x, func, color)]
-        if func == "help":
-            return a
+        checked_lines = self.fill_checked_lines(color, func_name, x, y)
+        if func_name == "help":
+            return checked_lines
         for i in range(8):
-            if a[i]:
+            if checked_lines[i]:
                 return True
         return False
+
+    def help_command(self, a, is_end, subset):
+        if is_end:
+            b = []
+            for i in range(a):
+                b.append(subset[i])
+            return b
+        else:
+            return []
+
+    def swap_command(self, a, color, subset, x, y):
+        self.field[y][x] = color
+        for i in range(a):
+            self.field[subset[i][0]][subset[i][1]] = color
+
+    def parse_func(self, a, color, func, is_end, subset, x, y):
+        if func == "help":
+            return self.help_command(a, is_end, subset)
+        if func == "swap" and is_end:
+            self.swap_command(a, color, subset, x, y)
+        return is_end
 
     def check_line(self, subset, y, x, func, color):
         a = 0
         is_end = False
         for i in range(len(subset)):
             if self.field[subset[i][0]][subset[i][1]] != color and \
-                            self.field[subset[i][0]][subset[i][1]] != 0:
+                    self.field[subset[i][0]][subset[i][1]] != 0:
                 a += 1
             else:
                 if self.field[subset[i][0]][subset[i][1]] != 0 and a > 0:
@@ -80,19 +105,7 @@ class Field(object):
                     break
                 else:
                     break
-        if func == "help":
-            if is_end:
-                b = []
-                for i in range(a):
-                    b.append(subset[i])
-                return b
-            else:
-                return []
-        if func == "swap" and is_end:
-            self.field[y][x] = color
-            for i in range(a):
-                self.field[subset[i][0]][subset[i][1]] = color
-        return is_end
+        return self.parse_func(a, color, func, is_end, subset, x, y)
 
     def up_subs(self, y, x):
         a = []
@@ -168,10 +181,7 @@ class Field(object):
             Y, X, val = self.good_bot_step(color, 3, self)
         self.put(Y, X, color)
 
-    def good_bot_step(self, color, nesting, field):
-        max_val = -1000
-        Y = -1
-        X = -1
+    def main_bot_step_search(self, x, y, color, field, max_val, nesting):
         for i in range(8):
             for j in range(8):
                 local_field = field.self_copy()
@@ -183,8 +193,15 @@ class Field(object):
                         val = self.good_bot_step(self.change_color(color), nesting - 1, local_field)[2]
                     if val > max_val:
                         max_val = val
-                        Y = i
-                        X = j
+                        y = i
+                        x = j
+        return x, y, max_val
+
+    def good_bot_step(self, color, nesting, field):
+        max_val = -1000
+        Y = -1
+        X = -1
+        X, Y, max_val = self.main_bot_step_search(X, Y, color, field, max_val, nesting)
         if nesting == 2:
             local_field = field.self_copy()
             local_field.put(Y, X, color)

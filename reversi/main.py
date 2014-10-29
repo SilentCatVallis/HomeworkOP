@@ -5,6 +5,7 @@ import client
 import socket
 import threading
 import time
+import os
 
 
 class Window():
@@ -18,10 +19,10 @@ class Window():
 
     def found_user_ip(self):
         try:
-            self.ip = socket.gethostbyname_ex(socket.gethostname())[2]
-            self.ip = self.ip[len(self.ip) - 1]
+            self.ip = [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in
+                       [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
         except:
-            self.ip = ""
+            self.ip = "connect to internet"
 
     def __init__(self):
         self.found_user_ip()
@@ -32,6 +33,7 @@ class Window():
         self.root = Tk()
         self.crete_window()
         self.create_window_buttons()
+        self.filepath = os.path.abspath(os.path.dirname(sys.argv[0]))
 
     def crete_window(self):
         self.root.title("Reverse")
@@ -42,18 +44,18 @@ class Window():
         self.root.mainloop()
 
     def create_server(self):
-        print('server')
         self.server = server.Server(self.ip)
         if self.server.find_connect():
-            print("yeap")
             self.is_server = True
             self.is_online = True
             self.server.send_color(self.player_select.get())
             self.create_game()
 
     def create_client(self):
-        print('client')
         self.client = client.Client(self.text_ip.get())
+        print(self.client.error)
+        if self.client.error:
+            return
         color = self.client.check_color()
         if color != 0:
             self.is_client = True
@@ -75,6 +77,7 @@ class Window():
         self.label_ip.grid(row=3, column=1)
         self.client_button.grid(row=4, column=0)
         self.text_ip.grid(row=4, column=1)
+        self.help_button.grid(row=0, column=4)
 
     def create_radiobuttons(self):
         self.player_select = IntVar()
@@ -93,6 +96,23 @@ class Window():
         self.client_button = Button(self.root, text="Connect", width=20, command=self.create_client)
         self.label_ip = Label(self.root, text=" IP:  " + self.ip)
         self.text_ip = Entry(self.root)
+        self.help_button = Button(self.root, text="?", width=5, command=self.open_help)
+
+    def open_help(self):
+        child = Toplevel(self.root)
+        child.title('Help')
+        child.minsize(width=700, height=200)
+        child.maxsize(width=700, height=200)
+        text = Text(child, font="Verdana 12", wrap=WORD)
+        text.insert(1.0, "Reversi\n\
+            Чтобы начать игру, нажмите кнопку 'start game'.\n\
+            Можно вырать цвет и сложность игры.\n\
+            Доступен один слот для сохранения.\n\
+            \t\tКак играть по сети: \n\
+            если есть поключение к сети, появится ваш IP\n\
+            Один человек создает сервер, и говорит свой IP другому человеку\n\
+            другой вводит его IP и нажимает подключиться")
+        text.pack()
 
     def create_window_buttons(self):
         self.put_main_buttons()
@@ -140,7 +160,7 @@ class Window():
         self.is_need_menu = True
 
     def save_game(self):
-        file = open("load.txt", "w")
+        file = open(self.filepath + "\\load.txt", "w")
         for i in range(8):
             for j in range(8):
                 file.write(str(self.game.field[i][j]))
@@ -150,10 +170,8 @@ class Window():
         file.write(str(self.difficult_select.get()))
         file.close()
 
-    def load_game(self):
-        self.is_game_come = False
-        self.game = field.Field()
-        with open("load.txt", "r") as lines:
+    def read_file(self):
+        with open(self.filepath + "\\load.txt", "r") as lines:
             lines = lines.read().split("\n")
             for i in range(8):
                 for j in range(8):
@@ -161,6 +179,11 @@ class Window():
             self.game.step = int(lines[8])
             self.player_select.set(int(lines[9]))
             self.difficult_select.set(int(lines[10]))
+
+    def load_game(self):
+        self.is_game_come = False
+        self.game = field.Field()
+        self.read_file()
         self.put_canvas()
         self.game.check_next_moves(self.game.step)
 
@@ -168,7 +191,7 @@ class Window():
         self.is_was_load = True
 
     def create_game(self):
-        print(self.step, self.player_select.get())
+        # print(self.step, self.player_select.get())
         self.game = field.Field()
         self.step = 2
         self.put_canvas()
@@ -179,10 +202,11 @@ class Window():
 
     def send_your_step(self, event):
         try:
+            post = str(min(7, event.y // 50)) + ':' + str(min(7, event.x // 50))
             if self.is_client:
-                self.client.set_cell(str(min(7, event.y // 50)) + ':' + str(min(7, event.x // 50)))
+                self.client.set_cell(post)
             else:
-                self.server.set_cell(str(min(7, event.y // 50)) + ':' + str(min(7, event.x // 50)))
+                self.server.set_cell(post)
         except:
             self.label.config(text="connection brake")
             time.sleep(0.5)
@@ -236,22 +260,28 @@ class Window():
             self.canvas.create_line(i * 50, 0, i * 50, 400, width=1, fill="blue")
             self.canvas.create_line(0, i * 50, 400, i * 50, width=1, fill="blue")
 
+    def draw_if_was_load(self):
+        self.destroy_canvas()
+        self.is_was_load = False
+        self.load_game()
+
+    def draw_if_need_menu(self):
+        self.canvas.delete("all")
+        self.draw_lines()
+        self.draw_ovals()
+        self.draw_help()
+        self.label.config(text=self.do_text())
+        self.root.after(100, self.draw_canvas)
+
     def draw_canvas(self):
         if self.is_was_load:
-            self.destroy_canvas()
-            self.is_was_load = False
-            self.load_game()
+            self.draw_if_was_load()
             return
         if self.is_need_menu:
             self.use_menu_button()
             return
         try:
-            self.canvas.delete("all")
-            self.draw_lines()
-            self.draw_ovals()
-            self.draw_help()
-            self.label.config(text=self.do_text())
-            self.root.after(100, self.draw_canvas)
+            self.draw_if_need_menu()
             return
         except:
             self.use_menu_button()
@@ -283,10 +313,10 @@ class Window():
         try:
             if self.is_client:
                 cell = self.client.get_cell().split(':')
-                #self.game.put(int(cell[0]), int(cell[1]), self.game.step)
+                # self.game.put(int(cell[0]), int(cell[1]), self.game.step)
             else:
                 cell = self.server.get_cell().split(':')
-                #self.game.put(int(cell[0]), int(cell[1]), self.game.step)
+                # self.game.put(int(cell[0]), int(cell[1]), self.game.step)
             self.game.put(int(cell[0]), int(cell[1]), self.game.step)
         except:
             self.draw_result()

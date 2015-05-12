@@ -25,6 +25,10 @@ namespace MapMaker
 
 		private const int ComponentWeight = 50;
 		private const int trapCoefficient = 10;
+		//private const char Wall = '█';
+		//private const char Road = ' ';
+		//private const char Trap = '#';
+		//private const char Health = '♥';
 		private const char Wall = '1';
 		private const char Road = '0';
 		private const char Trap = 'K';
@@ -532,9 +536,9 @@ namespace MapMaker
 							: map[new Point(y, x)] == Cell.Trap
 								? Trap
 								: Health;
-			charMap[player1.Destination.Y + 1, player1.Destination.X + 1] = '*';
-			charMap[player1.Start.Y + 1, player1.Start.X + 1] = '☺';
-			charMap[player2.Start.Y + 1, player2.Start.X + 1] = '☺';
+			//charMap[player1.Destination.Y + 1, player1.Destination.X + 1] = '*';
+			//charMap[player1.Start.Y + 1, player1.Start.X + 1] = '☺';
+			//charMap[player2.Start.Y + 1, player2.Start.X + 1] = '☺';
 			return charMap;
 		}
 

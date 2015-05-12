@@ -14,7 +14,7 @@ namespace MapMaker
 		public void ReturnMap()
 		{
 			const int height = 30;
-			const int width = 30;
+			const int width = 60;
 			var mapMaker = new MapMaker(height, width);
 			var map = mapMaker.GetMap();
 			for (var y = 0; y < height + 3; y++)

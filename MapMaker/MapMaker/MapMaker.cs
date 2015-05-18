@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using NUnit.Framework;
 
 namespace MapMaker
@@ -17,6 +20,38 @@ namespace MapMaker
 		Finish
 	}
 
+	public class MapMakerAnswer
+	{
+		public string[] Map { get; private set; }
+		public string[] PlayersXml { get; private set; }
+
+		public MapMakerAnswer(string[] map, string[] playersXml)
+		{
+			Map = map;
+			PlayersXml = playersXml;
+		}
+	}
+
+
+	[XmlRoot(Namespace = "http://localhost", IsNullable = false)]
+	public class Config
+	{
+		public string Filename;
+		[XmlArrayAttribute("players")]
+		public ConfigPoints[] Points;
+
+		public int FogOfWar;
+	}
+
+	public class ConfigPoints
+	{
+		public int StartPointX;
+		public int StartPointY;
+		public int TargetX;
+		public int TargetY;
+		public int Hp;
+	}
+
 	public class MapMaker
 	{
 		private readonly int height;
@@ -24,21 +59,55 @@ namespace MapMaker
 		private readonly Random random;
 
 		private const int ComponentWeight = 50;
-		private const int trapCoefficient = 10;
-		//private const char Wall = '█';
-		//private const char Road = ' ';
-		//private const char Trap = '#';
-		//private const char Health = '♥';
-		private const char Wall = '1';
-		private const char Road = '0';
-		private const char Trap = 'K';
-		private const char Health = 'L';
+		private const int TrapCoefficient = 10;
+		private const char DebugWall = '█';
+		private const char DebugRoad = ' ';
+		private const char DebugTrap = '#';
+		private const char DebugHealth = '♥';
+
+		private const char ReleaseWall = '1';
+		private const char ReleaseRoad = '0';
+		private const char ReleaseTrap = 'K';
+		private const char ReleaseHealth = 'L';
+
+		private char wall = '1';
+		private char road = '0';
+		private char trap = 'K';
+		private char health = 'L';
 
 		private readonly Player player1 = new Player();
 		private readonly Player player2 = new Player();
 
+		private bool debug;
+
+		public bool Debug
+		{
+			get { return debug; }
+			set { ApplyDebug(value); }
+		}
+
+		private void ApplyDebug(bool value)
+		{
+			if (value)
+			{
+				wall = DebugWall;
+				road = DebugRoad;
+				trap = DebugTrap;
+				health = DebugHealth;
+			}
+			else
+			{
+				wall = ReleaseWall;
+				road = ReleaseRoad;
+				trap = ReleaseTrap;
+				health = ReleaseHealth;
+			}
+			debug = value;
+		}
+
 		public MapMaker(int height, int width)
 		{
+			debug = false;
 			random = new Random();
 			this.width = width;
 			this.height = height;
@@ -50,31 +119,77 @@ namespace MapMaker
 			random = new Random(seed);
 		}
 
-		//public Char[,] GetTreeMap()
-		//{
-		//	var localHeight = height - 2;
-		//	var localWidth = width - 2;
-		//	var map = GetDefaultMap(localHeight, localWidth);
-		//	map[new Point(random.Next(localHeight), random.Next(localWidth))] = Cell.Road;
-		//	map = Kraskal(map);
-		//	var charMap = GetCharMap(localHeight, localWidth, map);
-		//	charMap = ToPrettyChar(charMap);
-		//	return charMap;
-		//}
+		public MapMakerAnswer GetMapSpeciallyForNastya()
+		{
+			var mapDescription = GetMap();
+			var map = mapDescription.Take(mapDescription.Length - 3).ToArray();
+			var players = mapDescription
+				.Skip(map.Length)
+				.Take(2)
+				.Select(x => x.Split(' ')
+					.Select(int.Parse)
+					.ToArray())
+				.ToArray();
+			var fogOfWar = int.Parse(mapDescription.Last());
+			var config = GetConfig(fogOfWar, players);
+			var serializer = new XmlSerializer(typeof (Config));
+			var stringWritter = new StringWriter();
+			serializer.Serialize(stringWritter, config);
+
+			return new MapMakerAnswer(map, stringWritter.GetStringBuilder().ToString().Split('\n'));
+		}
+
+		private static Config GetConfig(int fogOfWar, IReadOnlyList<int[]> players)
+		{
+			var config = new Config
+			{
+				FogOfWar = fogOfWar,
+				Points = new[]
+				{
+					new ConfigPoints
+					{
+						Hp = players[0][4],
+						StartPointX = players[0][0],
+						StartPointY = players[0][1],
+						TargetX = players[0][2],
+						TargetY = players[0][3]
+					},
+					new ConfigPoints
+					{
+						Hp = players[1][4],
+						StartPointX = players[1][0],
+						StartPointY = players[1][1],
+						TargetX = players[1][2],
+						TargetY = players[1][3]
+					}
+				}
+			};
+			return config;
+		}
 
 		public string[] GetMap()
 		{
-			var localHeight = height - 2;
-			var localWidth = width - 2;
-			var map = GetDefaultMap(localHeight, localWidth);
-			map[new Point(random.Next(localHeight), random.Next(localWidth))] = Cell.Road;
-			map = CreateWorldLikeGod(map);
-			CreatePlayers(map);
-			map = CreateTraps(map);
-			map = PutHealth(map);
-			var charMap = GetCharMap(localHeight, localWidth, map);
-			charMap = ToPrettyChar(charMap);
-			return ToStringMap(charMap);
+			while (true)
+			{
+				try
+				{
+					var localHeight = height - 2;
+					var localWidth = width - 2;
+					var map = GetDefaultMap(localHeight, localWidth);
+					map[new Point(random.Next(localHeight), random.Next(localWidth))] = Cell.Road;
+					map = CreateWorldLikeGod(map);
+					CreatePlayers(map);
+					map = CreateTraps(map);
+					map = PutHealth(map);
+					var charMap = GetCharMap(localHeight, localWidth, map);
+					charMap = ToPrettyChar(charMap);
+					return ToStringMap(charMap);
+				}
+				catch (Exception)
+				{
+					// ignored
+				}
+			}
 		}
 
 		private string[] ToStringMap(char[,] charMap)
@@ -91,7 +206,7 @@ namespace MapMaker
 				player1.Destination.Y + 1, player1.Hp);
 			answer[height + 1] = string.Format("{0} {1} {2} {3} {4}", player2.Start.X + 1, player2.Start.Y + 1, player2.Destination.X + 1,
 				player2.Destination.Y + 1, player2.Hp);
-			answer[height + 2] = Math.Min(Math.Max((width + height)/20, 1), 3).ToString();
+			answer[height + 2] = Math.Min(Math.Max((width + height) / 20, 1) + 1, 4).ToString();
 			return answer;
 		}
 
@@ -101,7 +216,7 @@ namespace MapMaker
 			if (gameMod == 0)
 				return SurvivalMoge(map);
 			if (gameMod == 1)
-				return SurvivalMoge(map);
+				return SurvivalMoge(map);//TODO: do this tank mod, lazy idiot!
 			return map;
 		}
 
@@ -115,11 +230,10 @@ namespace MapMaker
 			player1.Hp = Math.Max(2, (width + height) / 20);
 			player2.Hp = Math.Max(2, (width + height) / 20);
 			PutSurvivalHealth(map);
-			//PutSurvivalHealth(player2, map);
 			return map;
 		}
 
-		private void PutSurvivalHealth( Dictionary<Point, Cell> map)
+		private void PutSurvivalHealth(Dictionary<Point, Cell> map)
 		{
 			var allEmptyes = new HashSet<Point>(map
 				.Where(x => x.Value == Cell.Road || x.Value == Cell.Hero || x.Value == Cell.Finish)
@@ -127,17 +241,17 @@ namespace MapMaker
 			var components = new List<HashSet<Point>>();
 			while (allEmptyes.Count > 0)
 			{
-				var component = GetConnectedComponent(map, allEmptyes.First(), new HashSet<Cell> {Cell.Road, Cell.Finish});
+				var component = GetConnectedComponent(map, allEmptyes.First(), new HashSet<Cell> { Cell.Road, Cell.Finish });
 				foreach (var point in component)
 					allEmptyes.Remove(point);
 				components.Add(component);
 			}
 
-			foreach (var component in components)
+			foreach (var point in components
+				.Select(component => component.ToList())
+				.Select(cells => cells[random.Next(cells.Count)]))
 			{
-				var cells = component.ToList();
-				var hp = cells[random.Next(cells.Count)];
-				map[hp] = Cell.Health;
+				map[point] = Cell.Health;
 			}
 			return;
 			//var curHp = player.Hp;
@@ -217,7 +331,7 @@ namespace MapMaker
 		{
 			var emptyCells = map.Where(x => x.Value == Cell.Road).ToList();
 
-			var trapCount = emptyCells.Count/trapCoefficient;
+			var trapCount = emptyCells.Count / TrapCoefficient;
 
 			for (int i = 0; i < trapCount; i++)
 			{
@@ -251,7 +365,7 @@ namespace MapMaker
 			var finishPlace = SelectFinishPlace(emptyes);
 			var pathes = GetPathMap(map, finishPlace, Cell.Road);
 			var maximumLength = pathes.Keys.Max();
-			var minimumPossibleLength = Math.Max(1, (maximumLength*1)/2);
+			var minimumPossibleLength = Math.Max(1, (maximumLength * 1) / 2);
 			var length1 = -1;
 			var length2 = -1;
 			int max = 0;
@@ -289,7 +403,7 @@ namespace MapMaker
 				point1 = pathes[maximumLength][0];
 				point2 = pathes[maximumLength - 1][0];
 			}
-			while(point1.Equals(point2))
+			while (point1.Equals(point2))
 				point2 = pathes[index][random.Next(pathes[index].Count)];
 			player1.Start = point1;
 			player2.Start = point2;
@@ -305,7 +419,7 @@ namespace MapMaker
 			var cells = new List<Point>();
 			for (int i = 0; i < (width + height) / 2; i++)
 				cells.Add(emptyes[random.Next(emptyes.Count)]);
-			int minLength = 2*(width + height);
+			int minLength = 2 * (width + height);
 			int index = -1;
 			for (int i = 0; i < cells.Count; i++)
 			{
@@ -316,16 +430,110 @@ namespace MapMaker
 					index = i;
 				}
 			}
-			return cells[index]; 
+			return cells[index];
 		}
 
 		private Dictionary<Point, Cell> CreateWorldLikeGod(Dictionary<Point, Cell> map)
 		{
-			map = Kraskal(map);
-			map = SplitOnComponents(map);
-			map = FillComponents(map);
-			map = UnionComponents(map);
-			map = ReplaceBigWallMassive(map);
+			var mapMode = random.Next();
+			if (mapMode % 3 > 0)
+			{
+				map = Kraskal(map);
+				if (mapMode % 3 == 1)
+				{
+					map = SplitOnComponents(map);
+					map = FillComponents(map);
+					map = UnionComponents(map);
+					map = ReplaceBigWallMassive(map);
+				}
+				else
+				{
+					map = ReplaceRandomWall(map);
+				}
+			}
+			else
+			{
+				map = RectangleRooms(map);
+				map = FillComponents(map);
+				map = UnionComponents(map);
+			}
+			return map;
+		}
+
+		private Dictionary<Point, Cell> RectangleRooms(Dictionary<Point, Cell> map)
+		{
+			foreach (var cell in map.Keys.ToList())
+			{
+				map[cell] = Cell.Road;
+			}
+			var emptyes = new HashSet<Point>(map.Where(x => x.Value == Cell.Road).Select(x => x.Key));
+			var centerCount = ((height - 2) * (width - 2) / ComponentWeight) / 2;
+			for (int i = 0; i < centerCount; i++)
+			{
+				var emptyesList = emptyes.ToList();
+				var emptyPlace = emptyesList[random.Next(emptyesList.Count)];
+				//while (GetNeighbours(emptyPlace.Key).Any(x => map[x] != Cell.Road))
+				//	emptyPlace = emptyes[random.Next(emptyes.Count)];
+				foreach (var wall in GrowRoom(emptyPlace, map))
+					emptyes.Remove(wall);
+			}
+			return map;
+		}
+
+		private HashSet<Point> GrowRoom(Point emptyPlace, Dictionary<Point, Cell> map)
+		{
+			var walls = new HashSet<Point>();
+
+			for (int i = emptyPlace.X - 1; i >= 0; i--)
+			{
+				var point = new Point(emptyPlace.Y, i);
+				if (map[point] == Cell.Wall)
+					break;
+				map[point] = Cell.Wall;
+				foreach (var neighbour in GetNeighbours(point))
+					walls.Add(neighbour);
+			}
+			for (int i = emptyPlace.X + 1; i < width - 2; i++)
+			{
+				var point = new Point(emptyPlace.Y, i);
+				if (map[point] == Cell.Wall)
+					break;
+				map[point] = Cell.Wall;
+				foreach (var neighbour in GetNeighbours(point))
+					walls.Add(neighbour);
+			}
+
+			for (int i = emptyPlace.Y - 1; i >= 0; i--)
+			{
+				var point = new Point(i, emptyPlace.X);
+				if (map[point] == Cell.Wall)
+					break;
+				map[point] = Cell.Wall;
+				foreach (var neighbour in GetNeighbours(point))
+					walls.Add(neighbour);
+			}
+			for (int i = emptyPlace.Y + 1; i < height - 2; i++)
+			{
+				var point = new Point(i, emptyPlace.X);
+				if (map[point] == Cell.Wall)
+					break;
+				map[point] = Cell.Wall;
+				foreach (var neighbour in GetNeighbours(point))
+					walls.Add(neighbour);
+			}
+
+			map[emptyPlace] = Cell.Wall;
+			return walls;
+		}
+
+		private Dictionary<Point, Cell> ReplaceRandomWall(Dictionary<Point, Cell> map)
+		{
+			var walls = map.Where(x => x.Value == Cell.Wall).ToList();
+			var replacedCount = 2 * ((height - 2) * (width - 2) / ComponentWeight);
+			for (var i = 0; i < replacedCount; i++)
+			{
+				map[walls[random.Next(walls.Count)].Key] = Cell.Road;
+			}
 			return map;
 		}
 
@@ -335,7 +543,7 @@ namespace MapMaker
 			var components = new List<HashSet<Point>>();
 			while (allWalls.Count > 0)
 			{
-				var component = GetConnectedComponent(map, allWalls.First(), new HashSet<Cell> { Cell.Wall});
+				var component = GetConnectedComponent(map, allWalls.First(), new HashSet<Cell> { Cell.Wall });
 				foreach (var point in component)
 					allWalls.Remove(point);
 				components.Add(component);
@@ -448,7 +656,7 @@ namespace MapMaker
 			var visited = new HashSet<Point> { startPoint };
 			queue.Enqueue(new Tuple<Point, int>(startPoint, 0));
 			var answer = new Dictionary<int, List<Point>>();
-			answer[0] = new List<Point> {startPoint};
+			answer[0] = new List<Point> { startPoint };
 			while (queue.Count > 0)
 			{
 				var current = queue.Dequeue();
@@ -467,7 +675,7 @@ namespace MapMaker
 		private HashSet<Point> GetConnectedComponent(Dictionary<Point, Cell> map, Point startPoint, HashSet<Cell> cellTypes)
 		{
 			var queue = new Queue<Point>();
-			var visited = new HashSet<Point> {startPoint};
+			var visited = new HashSet<Point> { startPoint };
 			queue.Enqueue(startPoint);
 			while (queue.Count > 0)
 			{
@@ -483,9 +691,9 @@ namespace MapMaker
 
 		private Dictionary<Point, Cell> SplitOnComponents(Dictionary<Point, Cell> map)
 		{
-			var allEmptyes = GetConnectedComponent(map, map.First(x => x.Value == Cell.Road).Key, new HashSet<Cell>{Cell.Road});
+			var allEmptyes = GetConnectedComponent(map, map.First(x => x.Value == Cell.Road).Key, new HashSet<Cell> { Cell.Road });
 			var forSplit = allEmptyes.ToList();
-			var componentCount = (height - 2)*(width - 2) / ComponentWeight;
+			var componentCount = (height - 2) * (width - 2) / ComponentWeight;
 			for (var i = 0; i < componentCount; i++)
 			{
 				var splitter = forSplit[random.Next(forSplit.Count)];
@@ -530,15 +738,18 @@ namespace MapMaker
 			for (var y = 0; y < localHeight; y++)
 				for (var x = 0; x < localWidth; x++)
 					charMap[y + 1, x + 1] = map[new Point(y, x)] == Cell.Wall
-						? Wall
+						? wall
 						: map[new Point(y, x)] == Cell.Road
-							? Road
+							? road
 							: map[new Point(y, x)] == Cell.Trap
-								? Trap
-								: Health;
-			//charMap[player1.Destination.Y + 1, player1.Destination.X + 1] = '*';
-			//charMap[player1.Start.Y + 1, player1.Start.X + 1] = '☺';
-			//charMap[player2.Start.Y + 1, player2.Start.X + 1] = '☺';
+								? trap
+								: health;
+			if (debug)
+			{
+				charMap[player1.Destination.Y + 1, player1.Destination.X + 1] = '*';
+				charMap[player1.Start.Y + 1, player1.Start.X + 1] = '☺';
+				charMap[player2.Start.Y + 1, player2.Start.X + 1] = '☺';
+			}
 			return charMap;
 		}
 
@@ -546,13 +757,13 @@ namespace MapMaker
 		{
 			for (var y = 0; y < height; y++)
 			{
-				charMap[y, 0] = Wall;
-				charMap[y, width - 1] = Wall;
+				charMap[y, 0] = wall;
+				charMap[y, width - 1] = wall;
 			}
 			for (var x = 0; x < width; x++)
 			{
-				charMap[0, x] = Wall;
-				charMap[height - 1, x] = Wall;
+				charMap[0, x] = wall;
+				charMap[height - 1, x] = wall;
 			}
 			return charMap;
 		}

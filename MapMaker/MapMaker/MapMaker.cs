@@ -236,23 +236,43 @@ namespace MapMaker
 		private void PutSurvivalHealth(Dictionary<Point, Cell> map)
 		{
 			var allEmptyes = new HashSet<Point>(map
-				.Where(x => x.Value == Cell.Road || x.Value == Cell.Hero || x.Value == Cell.Finish)
+				.Where(x => x.Value == Cell.Road)
 				.Select(x => x.Key));
 			var components = new List<HashSet<Point>>();
 			while (allEmptyes.Count > 0)
 			{
-				var component = GetConnectedComponent(map, allEmptyes.First(), new HashSet<Cell> { Cell.Road, Cell.Finish });
+				var component = GetConnectedComponent(map, allEmptyes.First(), new HashSet<Cell> { Cell.Road, Cell.Health });
 				foreach (var point in component)
 					allEmptyes.Remove(point);
 				components.Add(component);
 			}
 
-			foreach (var point in components
-				.Select(component => component.ToList())
-				.Select(cells => cells[random.Next(cells.Count)]))
+			foreach (var component in components)
 			{
-				map[point] = Cell.Health;
+				var points = component.ToList();
+				var healthPoint = points[random.Next(points.Count)];
+				map[healthPoint] = Cell.Health;
+				points.Remove(healthPoint);
+				if (points.Count == 0)
+					continue;
+
+				healthPoint = points[random.Next(points.Count)];
+				map[healthPoint] = Cell.Health;
+				points.Remove(healthPoint);
 			}
+
+			//foreach (var point in components
+			//	.Select(component => component.ToList())
+			//	.Select(cells => cells[random.Next(cells.Count)]))
+			//{
+			//	map[point] = Cell.Health;
+			//}
+			//foreach (var point in components
+			//	.Select(component => component.ToList())
+			//	.Select(cells => cells[random.Next(cells.Count)]))
+			//{
+			//	map[point] = Cell.Health;
+			//}
 			return;
 			//var curHp = player.Hp;
 			//var cellForMove = new HashSet<Cell>

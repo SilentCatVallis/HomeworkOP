@@ -16,9 +16,9 @@ namespace MapMaker
 		{
 			const int height = 20;
 			const int width = 20;
-			var rand = new Random();
+			var rand = new Random();//1545806551
 			var seed = rand.Next();
-			var mapMaker = new MapMaker(height, width, seed) {Debug = true};
+			var mapMaker = new MapMaker(height, width, seed) { Debug = true };
 			var map = mapMaker.GetMap();
 			for (var y = 0; y < height + 3; y++)
 			{
@@ -35,7 +35,7 @@ namespace MapMaker
 			const int width = 20;
 			var rand = new Random();
 			var seed = rand.Next();
-			var mapMaker = new MapMaker(height, width, seed) { Debug = false };
+			var mapMaker = new MapMaker(height, width, 1545806551) { Debug = false };
 			var map = mapMaker.GetMapSpeciallyForNastya();
 			foreach (var s in map.Map)
 			{
